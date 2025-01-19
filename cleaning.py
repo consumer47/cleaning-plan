@@ -47,7 +47,7 @@ def create_calendar_files(schedule, names):
     all_calendar = Calendar()
     for date_str, team in schedule.items():
         event = Event()
-        event.name = 'Cleaning Duty'
+        event.name = 'Clean! ' + ', '.join(team) 
         date = datetime.strptime(date_str, "%Y-%m-%d")
         event.begin = date.replace(hour=13, minute=0)  # Set time to 13:00
         event.duration = timedelta(hours=1)
@@ -63,7 +63,7 @@ def create_calendar_files(schedule, names):
         for date_str, team in schedule.items():
             if name in team:
                 event = Event()
-                event.name = 'Cleaning Duty'
+                event.name = 'Clean! ' + ', '.join(team) 
                 date = datetime.strptime(date_str, "%Y-%m-%d")
                 event.begin = date.replace(
                     hour=13, minute=0)  # Set time to 13:00
