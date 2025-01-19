@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File with Arguments",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "--start-date=2025-01-01",
+                "--end-date=2025-01-31",
+                "--names=Dennis,Lena,Fabs,Zenniz,Adi",
+                "--team-size=2"
+            ]
+        }
+    ]
+}
+
