@@ -1,8 +1,7 @@
 import argparse
 import random
 from collections import defaultdict
-
-from itertools import combinations
+from itertools import combinations, cycle
 
 
 def create_combination_of_names(names, team_size):
@@ -27,11 +26,14 @@ def create_combination_of_names(names, team_size):
 
 def generate_cleaning_plan(start_date_str, end_date_str, names, team_size, frequency='weekly'):
     from datetime import datetime, timedelta
-    from itertools import cycle
 
     combinations = create_combination_of_names(names, team_size)
-    # randomize the combinations:
+    # Randomize the combinations
     combinations_random = random.sample(combinations, len(combinations))
+
+    # Cycle through the random combinations
+    combinations_cycle = cycle(combinations_random)
+
     # Convert string dates to datetime objects
     start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
@@ -41,23 +43,16 @@ def generate_cleaning_plan(start_date_str, end_date_str, names, team_size, frequ
         delta = timedelta(weeks=1)
 
     current_date = start_date
-    schedule = defaultdict(list)
+    schedule = {}
 
-    # Create a circular iterator over names to ensure even distribution
-    people_cycle = cycle(names)
-    temp = list(people_cycle)
-    people_list = list(people_cycle)[:team_size]  # initial team setup
-    random.shuffle(people_list)  # randomize to start iterations
     while current_date <= end_date:
-        # Form the team
-        current_team = people_list[:team_size]
-        # Append the team to the schedule
+        # Get the next team from the cycle
+        current_team = next(combinations_cycle)
+        # Add the team to the schedule
         schedule[current_date.strftime("%Y-%m-%d")] = current_team
-        # Shuffle people_list and create next team
-        random.shuffle(people_list)
-        people_list = people_list[team_size:] + current_team
         # Move the date forward by delta
         current_date += delta
+
     return schedule
 
 
